@@ -42,11 +42,11 @@ export class ThreeRingsService {
 		return property.value;
 	}
 
-	getVolunteerForShift(
+	getVolunteersForShift(
 		shifts: Shift[],
 		currentDateTime: string,
 		rotaType: RotaType,
-	): Volunteer {
+	): Volunteer[] {
 		const now = DateTime.fromISO(currentDateTime);
 
 		const matching = shifts.filter((shift: Shift) => {
@@ -60,18 +60,6 @@ export class ThreeRingsService {
 			return isDuringShift && shift.rota === rotaType;
 		});
 
-		if (matching.length !== 1) {
-			throw new Error(
-				`More than one '${rotaType}' shift found for the current date: ${currentDateTime}`,
-			);
-		}
-
-		if (matching[0]?.volunteers.length !== 1) {
-			throw new Error(
-				`More than one volunteer found for the '${rotaType}' shift on the current date: ${currentDateTime}`,
-			);
-		}
-
-		return matching[0].volunteers[0] as Volunteer;
+		return matching.flatMap((shift) => shift.volunteers);
 	}
 }

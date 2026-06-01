@@ -21,4 +21,8 @@ export default class Config {
 	static getThreeRingsApiKey(): string {
 		return required("THREE_RINGS_API_KEY");
 	}
+
+	static getWebhookUrl(): string {
+		return required("WEBHOOK_URL");
+	}
 }
